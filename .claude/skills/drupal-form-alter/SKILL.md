@@ -6,7 +6,7 @@ description: Drupal form alter patterns — hook_form_alter, hook_form_FORM_ID_a
 
 # Drupal Form Alter
 
-## OOP Hook (Drupal 10.3+ / 11)
+## OOP Hook (Drupal 11.1+)
 
 ```php
 // src/Hook/MyModuleHooks.php
@@ -14,28 +14,35 @@ namespace Drupal\my_module\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 final class MyModuleHooks {
+
+  use StringTranslationTrait;
 
   #[Hook('form_alter')]
   public function formAlter(array &$form, FormStateInterface $form_state, string $form_id): void {
     if ($form_id === 'node_article_form' || $form_id === 'node_article_edit_form') {
       // Alter the article node form.
-      $form['title']['#description'] = t('Enter a descriptive title.');
+      $form['title']['#description'] = $this->t('Enter a descriptive title.');
     }
   }
 
   // Target a specific form more efficiently
   #[Hook('form_node_article_form_alter')]
   public function formNodeArticleFormAlter(array &$form, FormStateInterface $form_state): void {
-    $form['#validate'][] = [MyModuleHooks::class, 'validateArticleForm'];
-    $form['actions']['submit']['#submit'][] = [MyModuleHooks::class, 'submitArticleForm'];
+    $form['#validate'][] = [$this, 'validateArticleForm'];
+    $form['actions']['submit']['#submit'][] = [$this, 'submitArticleForm'];
   }
 
 }
 ```
 
 ## Common Alterations
+
+The following snippets assume they run inside the attributed hook class shown above, so `$this->t()`
+is available. Use the form class's translation service or `TranslatableMarkup` when applying these
+patterns from another callable.
 
 ```php
 // Make a field required
@@ -51,7 +58,7 @@ $form['field_internal']['#access'] = FALSE;
 $form['#attributes']['class'][] = 'my-custom-form';
 
 // Change submit button label
-$form['actions']['submit']['#value'] = t('Save Article');
+$form['actions']['submit']['#value'] = $this->t('Save Article');
 
 // Add a custom submit handler (runs AFTER default)
 $form['actions']['submit']['#submit'][] = '::mySubmitHandler';

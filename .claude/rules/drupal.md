@@ -8,4 +8,9 @@
 ## Hooks
 
 - Always implement hooks using the `drupal-hooks` skill.
-- Never use procedural hooks in `.module` files.
+- Prefer OOP hooks with `#[Hook]` for new runtime hooks on Drupal 11.1+.
+- Keep procedural-only hooks procedural: legacy meta hooks and the install, update, schema, and
+  uninstall hook families. Hooks implemented by themes remain procedural. A module's runtime
+  `hook_theme()` implementation may use `#[Hook('theme')]`.
+- Use `LegacyHook` when providing an attribute implementation alongside a procedural compatibility
+  implementation.

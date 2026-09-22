@@ -7,7 +7,7 @@ Use when working with:
 - `hook_form_alter` or `hook_form_FORM_ID_alter`
 - `hook_node_presave` or other entity hooks
 - `hook_theme`
-- `#[Hook]` attribute (OOP hooks)
+- `#[Hook]` attribute (OOP hooks in Drupal 11.1+; ordering in 11.2+)
 - procedural hooks in `.module` files
 - deciding between a hook and an event subscriber
 
@@ -16,7 +16,7 @@ Use when working with:
 | Pattern | Location | Registration |
 |---|---|---|
 | Procedural | `my_module.module` | Auto |
-| OOP Hook | `src/Hook/` | Auto (Drupal 11.1+) |
+| OOP Hook | `src/Hook/` | Auto (Drupal 11.1+) when attributed |
 | Hook in service | `src/Service/` or anywhere | Manual (`services.yml`) |
 
 ## Example Prompts
@@ -28,4 +28,4 @@ Use when working with:
 
 ## Source
 
-[Drupal.org — OOP Hooks (Drupal 11)](https://www.drupal.org/node/3442349)
+[Drupal API — `Hook` attribute](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Hook%21Attribute%21Hook.php/class/Hook/11.x)

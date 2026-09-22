@@ -4,7 +4,7 @@
 
 Use when working with:
 
-- Creating fields on content types with `drush field:create`
+- Creating fields on content types with `ddev drush field:create`
 - Choosing field types (`string`, `entity_reference`, `image`, `boolean`)
 - Choosing field widgets and formatters
 - Accessing field values in PHP (`->get('field_name')->value`)

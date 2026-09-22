@@ -8,9 +8,9 @@ description: Drupal contrib module upgrade triage — Drupal.org issue queue res
 ## Core Update Commands
 
 ```bash
-composer require drupal/module_name --with-all-dependencies
-composer require drupal/module_name:^3.0 --with-all-dependencies
-drush updb -y && drush cr
+ddev composer require drupal/module_name --with-all-dependencies
+ddev composer require drupal/module_name:^3.0 --with-all-dependencies
+ddev drush updb -y && ddev drush cr
 ```
 
 ## Checking Drupal 11 Compatibility
@@ -79,8 +79,8 @@ CRITICAL_PATCHES=(
 
 **When patches go missing**:
 1. `./scripts/verify-patches.sh` to identify
-2. `composer reinstall drupal/module_name` or `./scripts/verify-patches.sh --fix`
-3. If still failing: `composer update --lock`
+2. `ddev composer reinstall drupal/module_name` or `./scripts/verify-patches.sh --fix`
+3. If still failing: `ddev composer update --lock`
 
 ### Finding Patches — Search BEFORE Creating
 
@@ -107,14 +107,14 @@ cd module_name-contrib && git checkout 1.0.3   # match installed version
 git diff > ~/Sites/your-project/patches/module_name-custom-fix.patch
 ```
 
-Then add to `composer.json` and run `composer reinstall drupal/module_name`.
+Then add to `composer.json` and run `ddev composer reinstall drupal/module_name`.
 
 ### Patch Application
 
 ```bash
-composer install                       # Install with patches
-composer reinstall drupal/module_name  # Re-patch a single module
-composer patches-repatch               # Re-patch all patched deps
+ddev composer install                       # Install with patches
+ddev composer reinstall drupal/module_name  # Re-patch a single module
+ddev composer patches-repatch               # Re-patch all patched deps
 ```
 
 ## Drupal 11 Deprecation Quick Reference
@@ -129,9 +129,9 @@ composer patches-repatch               # Re-patch all patched deps
 ## Upgrade Status Scan
 
 ```bash
-drush upgrade_status:analyze --all
-drush upgrade_status:analyze module1 module2
-drush upgrade_status:analyze --all --ignore-contrib   # custom code only
+ddev drush upgrade_status:analyze --all
+ddev drush upgrade_status:analyze module1 module2
+ddev drush upgrade_status:analyze --all --ignore-contrib   # custom code only
 ```
 
 ## Troubleshooting
@@ -141,4 +141,4 @@ drush upgrade_status:analyze --all --ignore-contrib   # custom code only
 | `Cannot apply patch` | Module version changed — find updated patch at `drupal.org/node/NODEID` |
 | `requires drupal/core ^9` | Add to `drupal-lenient` allowed-list |
 | `patch has already been applied` | Patch merged upstream — remove from composer.json |
-| `drush updb` fails | Try uninstall → update → re-enable module |
+| `ddev drush updb` fails | Try uninstall → update → re-enable module |

@@ -7,7 +7,7 @@ Use when working with:
 - Installing or updating contrib modules via Composer
 - Setting version constraints (`^2.0`, `~1.0`, `2.x-dev`)
 - Adding patches via `cweagans/composer-patches`
-- Checking for security vulnerabilities with `composer audit`
+- Checking for security vulnerabilities with `ddev composer audit`
 - Verifying Drupal 11 compatibility of a module
 - Running post-install steps (enable, updb, cex)
 
@@ -15,11 +15,11 @@ Use when working with:
 
 | Task | Command |
 |---|---|
-| Install module | `composer require drupal/module_name` |
-| Update module | `composer update drupal/module_name` |
-| Check outdated | `composer outdated drupal/*` |
-| Security audit | `composer audit` |
-| Apply patches | `composer install` (reads `composer.json`) |
+| Install module | `ddev composer require drupal/module_name` |
+| Update module | `ddev composer update drupal/module_name` |
+| Check outdated | `ddev composer outdated drupal/*` |
+| Security audit | `ddev composer audit` |
+| Apply patches | `ddev composer install` (reads `composer.json`) |
 
 ## Example Prompts
 
@@ -40,7 +40,7 @@ ddev drush cr
 ## Drupal 11 Compatibility Checklist
 
 Before requiring a module, check:
-1. `core_version_requirement: ^11` in module's `info.yml`
+1. `core_version_requirement: ^11` in the module's `info.yml` (or the project's supported range)
 2. Security coverage (green shield on drupal.org)
 3. Last commit date (is it maintained?)
 4. Number of sites using it

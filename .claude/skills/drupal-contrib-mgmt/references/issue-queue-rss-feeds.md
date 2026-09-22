@@ -272,5 +272,5 @@ curl "https://www.drupal.org/project/issues/rss/audiofield?text=file_validate_ex
 # Output: https://www.drupal.org/node/3432063
 
 # 2. Visit issue page to find patches
-# 3. Apply patch via composer (see drupal-patches-workflow.md)
+# 3. Apply patch via ddev composer (see drupal-patches-workflow.md)
 ```

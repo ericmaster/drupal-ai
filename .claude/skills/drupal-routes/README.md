@@ -9,7 +9,7 @@ Use when working with:
 - Setting route permissions (`_permission`, `_custom_access`, `_entity_access`)
 - Writing title callbacks for dynamic page titles
 - Generating URLs and links from route names
-- Scaffolding controllers with `drush generate controller`
+- Scaffolding controllers with `ddev drush generate controller`
 
 ## Mental Model
 
@@ -38,7 +38,7 @@ Use when working with:
 ## Scaffolding
 
 ```bash
-drush generate controller --answers='{
+ddev drush generate controller --answers='{
   "module": "my_module",
   "class": "MyController",
   "services": ["entity_type.manager", "current_user"]

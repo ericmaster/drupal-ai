@@ -8,46 +8,46 @@ description: Drush commands for Drupal — cache, config, module management, gen
 ## Essential Daily Commands
 
 ```bash
-drush cr                      # Clear all caches
-drush cex -y                  # Export configuration
-drush cim -y                  # Import configuration
-drush updb -y                 # Run database updates
-drush en module_name          # Enable a module
-drush pmu module_name         # Uninstall a module
-drush ws --severity=error     # Watch error logs
-drush ws --severity=error --count=20  # Last 20 errors
-drush php:eval "code"         # Run PHP inline
-drush sql:dump > dump.sql     # Database dump
+ddev drush cr                      # Clear all caches
+ddev drush cex -y                  # Export configuration
+ddev drush cim -y                  # Import configuration
+ddev drush updb -y                 # Run database updates
+ddev drush en module_name          # Enable a module
+ddev drush pmu module_name         # Uninstall a module
+ddev drush ws --severity=error     # Watch error logs
+ddev drush ws --severity=error --count=20  # Last 20 errors
+ddev drush php:eval "code"         # Run PHP inline
+ddev drush sql:dump > dump.sql     # Database dump
 ```
 
 ## Code Generators
 
 ```bash
-drush generate              # List all generators
-drush gen module            # Generate module (gen is alias)
-drush generate controller
-drush generate form-simple
-drush generate form-config
-drush generate service
-drush generate plugin:block
-drush generate plugin:field:formatter
-drush generate plugin:field:widget
-drush generate plugin:field:type
-drush generate event-subscriber
-drush generate hook
-drush generate entity:content
-drush generate entity:configuration
-drush generate test:unit
-drush generate test:kernel
-drush generate test:browser
-drush generate drush:command-file
+ddev drush generate              # List all generators
+ddev drush gen module            # Generate module (gen is alias)
+ddev drush generate controller
+ddev drush generate form-simple
+ddev drush generate form-config
+ddev drush generate service
+ddev drush generate plugin:block
+ddev drush generate plugin:field:formatter
+ddev drush generate plugin:field:widget
+ddev drush generate plugin:field:type
+ddev drush generate event-subscriber
+ddev drush generate hook
+ddev drush generate entity:content
+ddev drush generate entity:configuration
+ddev drush generate test:unit
+ddev drush generate test:kernel
+ddev drush generate test:browser
+ddev drush generate drush:command-file
 ```
 
 ## Non-Interactive Generation (--answers JSON)
 
 ```bash
 # Generate module
-drush generate module --answers='{
+ddev drush generate module --answers='{
   "name": "My Module",
   "machine_name": "my_module",
   "description": "A custom module",
@@ -63,7 +63,7 @@ drush generate module --answers='{
 }'
 
 # Generate service
-drush generate service --answers='{
+ddev drush generate service --answers='{
   "module": "my_module",
   "service_name": "my_module.helper",
   "class": "HelperService",
@@ -75,10 +75,10 @@ drush generate service --answers='{
 
 ```bash
 # Create field (interactive)
-drush field:create
+ddev drush field:create
 
 # Create field (non-interactive)
-drush field:create node article \
+ddev drush field:create node article \
   --field-name=field_subtitle \
   --field-label="Subtitle" \
   --field-type=string \
@@ -87,50 +87,50 @@ drush field:create node article \
   --cardinality=1
 
 # List fields
-drush field:info node article
+ddev drush field:info node article
 
 # Field types/widgets/formatters
-drush field:types
-drush field:widgets
-drush field:formatters
+ddev drush field:types
+ddev drush field:widgets
+ddev drush field:formatters
 
 # Delete field
-drush field:delete node.article.field_subtitle
+ddev drush field:delete node.article.field_subtitle
 ```
 
 ## Discover Generator Prompts
 
 ```bash
 # Preview what answers are needed
-drush generate module -vvv --dry-run
+ddev drush generate module -vvv --dry-run
 
 # Accept all defaults
-drush generate module -y
+ddev drush generate module -y
 ```
 
 ## State & Config via CLI
 
 ```bash
 # State
-drush state:get my_module.last_run
-drush state:set my_module.feature_enabled 1
-drush state:del my_module.last_run
+ddev drush state:get my_module.last_run
+ddev drush state:set my_module.feature_enabled 1
+ddev drush state:del my_module.last_run
 
 # Config
-drush config:get my_module.settings
-drush config:set my_module.settings enabled 1
-drush config:edit my_module.settings
+ddev drush config:get my_module.settings
+ddev drush config:set my_module.settings enabled 1
+ddev drush config:edit my_module.settings
 ```
 
 ## User Management
 
 ```bash
-drush user:create testuser --mail="test@example.com" --password="password"
-drush user:login                        # One-time login for uid 1
-drush user:login --uid=2               # One-time login for uid 2
-drush user:role:add editor testuser
-drush user:block testuser
-drush user:unblock testuser
+ddev drush user:create testuser --mail="test@example.com" --password="password"
+ddev drush user:login                        # One-time login for uid 1
+ddev drush user:login --uid=2               # One-time login for uid 2
+ddev drush user:role:add editor testuser
+ddev drush user:block testuser
+ddev drush user:unblock testuser
 ```
 
 ## DDEV Wrapper

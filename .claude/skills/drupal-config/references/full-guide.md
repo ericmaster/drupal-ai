@@ -1,5 +1,8 @@
 # Drupal Configuration Management
 
+Local project commands use the DDEV wrapper (`ddev drush`). The `ssh ... "cd ... && drush ..."`
+examples below intentionally run Drush on the named remote host and are not local command examples.
+
 Safe patterns for inspecting and syncing Drupal configuration across environments without accidentally importing changes.
 
 ## Problem: Avoid Accidental Config Imports

@@ -8,7 +8,7 @@ Use when working with:
 - Importing data from CSV files
 - Importing data from JSON or external APIs
 - Writing custom source, process, or destination plugins
-- Running and debugging migrations with `drush migrate:*` commands
+- Running and debugging migrations with `ddev drush migrate:*` commands
 - Handling migration dependencies and rollbacks
 
 ## Mental Model
@@ -46,9 +46,9 @@ Use when working with:
 ## Essential Modules
 
 ```bash
-drush en migrate migrate_drupal migrate_drupal_ui
-composer require drupal/migrate_plus drupal/migrate_tools drupal/migrate_file
-drush en migrate_plus migrate_tools migrate_file
+ddev drush en migrate migrate_drupal migrate_drupal_ui
+ddev composer require drupal/migrate_plus drupal/migrate_tools drupal/migrate_file
+ddev drush en migrate_plus migrate_tools migrate_file
 ```
 
 | Module | Purpose |
@@ -76,11 +76,11 @@ $databases['migrate']['default'] = [
 
 ```bash
 # Generate migrations from D7 source (configure only, don't run yet)
-drush migrate:upgrade --legacy-db-key=migrate --configure-only
+ddev drush migrate:upgrade --legacy-db-key=migrate --configure-only
 
 # Then review and run
-drush migrate:status
-drush migrate:import --all
+ddev drush migrate:status
+ddev drush migrate:import --all
 ```
 
 ## CSV Migration Example
@@ -182,10 +182,10 @@ process:
 
 ```bash
 # Verbose output
-drush migrate:import migration_id -vvv
+ddev drush migrate:import migration_id -vvv
 
 # Show per-row error messages
-drush migrate:messages migration_id
+ddev drush migrate:messages migration_id
 ```
 
 ```php
@@ -194,9 +194,9 @@ drush migrate:messages migration_id
 ```
 
 **Common issues:**
-- "Migration is busy" → `drush migrate:reset-status migration_id`
+- "Migration is busy" → `ddev drush migrate:reset-status migration_id`
 - Memory errors → use `--limit=500` to batch
-- Missing dependencies → check `migration_dependencies` IDs match `drush migrate:status` output
+- Missing dependencies → check `migration_dependencies` IDs match `ddev drush migrate:status` output
 
 ## Migration Module Structure
 

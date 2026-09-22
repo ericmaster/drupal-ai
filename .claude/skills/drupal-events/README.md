@@ -15,7 +15,7 @@ Use when working with:
 | Pattern | Location | Registration |
 |---|---|---|
 | Event subscriber | `src/EventSubscriber/` | `services.yml` with `event_subscriber` tag |
-| OOP Hook | `src/Hook/` | Auto (Drupal 11.1+) |
+| OOP Hook | `src/Hook/` | Auto (Drupal 11.1+) when attributed |
 
 | Use Events When | Use Hooks When |
 |---|---|
@@ -49,4 +49,4 @@ Prefer **hooks** when:
 
 ## Source
 
-[Hooks vs Events](https://www.specbee.com/blogs/hooks-vs-events-in-drupal-making-informed-choice)
+[Event Subscriber API](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21EventSubscriber%21EventSubscriberInterface.php/interface/EventSubscriberInterface/11.x)

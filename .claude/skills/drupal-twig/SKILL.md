@@ -39,9 +39,9 @@ description: Drupal Twig templates — best practices, auto-escaping, translatio
 ## Safe Markup
 
 ```twig
-{# Already sanitized by Drupal — safe to use |raw #}
+{# Render arrays and Markup objects are rendered by Drupal; do not add |raw. #}
 {{ content.body }}
-{{ content|raw }}
+{{ content }}
 
 {# Render a single field #}
 {{ content.field_image }}
@@ -49,6 +49,10 @@ description: Drupal Twig templates — best practices, auto-escaping, translatio
 {# Render with a specific view mode #}
 {{ node|view('teaser') }}
 ```
+
+Never use `|raw` to force a render array or field to display. Use a render array, a field render
+element, or a deliberately sanitized `MarkupInterface` value. Only use `|raw` when the value's
+trusted/sanitized origin is explicit and reviewed.
 
 ## Debugging
 
@@ -100,4 +104,3 @@ public function themeSuggestionsNodeAlter(array &$suggestions, array $variables)
   $suggestions[] = 'node__' . $node->bundle() . '__' . $view_mode;
 }
 ```
-

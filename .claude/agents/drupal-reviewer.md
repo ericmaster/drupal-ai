@@ -37,8 +37,8 @@ You are a senior Drupal developer performing thorough code review.
 
 ```bash
 # These MUST pass before committing
-./vendor/bin/phpcs -p modules/custom/
-./vendor/bin/phpcbf modules/custom/  # Auto-fix first
+ddev phpcs -p modules/custom/
+ddev exec vendor/bin/phpcbf modules/custom/  # Auto-fix only with approval
 ```
 
 If PHPCS errors exist, **stop the review** and ask the developer to run `phpcbf` first. Don't waste review time on auto-fixable issues.
@@ -72,10 +72,12 @@ If PHPCS errors exist, **stop the review** and ask the developer to run `phpcbf`
 - [ ] No deprecated API usage (check change records)
 - [ ] Appropriate use of `t()` for user-facing strings
 - [ ] Correct use of placeholders (`@variable`, `%variable`, `:variable`)
-- [ ] Classes in `src/`, hooks in `.module` file
+- [ ] Classes in `src/`; use attributed OOP hooks for supported runtime hooks and procedural hooks
+      where Drupal requires them (install, update, schema, uninstall, and theme hooks)
 
 ### Architecture
-- [ ] Hooks in .module file kept thin (delegate to services)
+- [ ] Procedural hooks are limited to required/compatibility cases and kept thin where possible;
+      module runtime `hook_theme()` may use `#[Hook('theme')]`, while theme implementations stay procedural
 - [ ] Plugins properly annotated (or using PHP attributes in D11)
 - [ ] Configuration schema defined for ALL custom config
 - [ ] Event subscribers vs hooks chosen appropriately
@@ -122,4 +124,3 @@ Code clarity improvements, best practice recommendations
 
 ### Research Recommendations
 Contrib modules that could replace or enhance custom code
-

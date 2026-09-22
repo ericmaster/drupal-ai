@@ -1,11 +1,11 @@
 ---
 name: drupal-htmx
-description: HTMX in Drupal 11.3+ core — the Htmx PHP fluent builder, dynamic forms with swapOob, partial routes with _htmx_route, response headers, and Drupal.behaviors integration. Use when building interactive UI without full-page reloads using Drupal's native HTMX support.
+description: HTMX in Drupal 11.3+ core - the Htmx PHP fluent builder, dynamic forms with swapOob, routes with _htmx_route, response headers, and Drupal.behaviors integration. Use when building interactive UI without full-page reloads using Drupal's native HTMX support.
 ---
 
 # Drupal HTMX
 
-HTMX 2.0.4 ships in Drupal 11.3+ core as `core/htmx`. No contrib module needed.
+HTMX 2.0.4 ships in Drupal 11.3+ core. No contrib module is needed.
 
 ## When to use HTMX vs AJAX Form API
 
@@ -26,7 +26,8 @@ mymodule/htmx-feature:
     - core/drupal.htmx
 ```
 
-`core/drupal.htmx` includes: htmx vendor JS + Drupal behaviors bridge + asset loader + drupalSettings integration.
+`core/htmx` is the vendor HTMX library. `core/drupal.htmx` is Drupal's integration bridge; it
+depends on `core/htmx` and adds the Drupal behaviors bridge, asset loader, and drupalSettings integration.
 
 ## The `Htmx` PHP Fluent Builder
 
@@ -112,9 +113,11 @@ public function buildForm(array $form, FormStateInterface $form_state, string $t
 public function submitForm(array &$form, FormStateInterface $form_state): void {}
 ```
 
-## Pattern: Partial Route (`_htmx_route`)
+## Pattern: HTMX Route (`_htmx_route`)
 
-A route that returns only its content fragment (no `<html>` shell). Use for controllers responding to HTMX `hx-get`/`hx-post` calls.
+A route rendered by Drupal's `HtmxRenderer`. Use it for controllers responding to HTMX requests.
+The renderer wraps the main content in a complete HTML document so HTMX can process attachments and
+replace the requested target; it is not a bare fragment renderer.
 
 ```yaml
 # mymodule.routing.yml
@@ -124,7 +127,7 @@ mymodule.htmx_partial:
     _controller: '\Drupal\mymodule\Controller\HtmxController::content'
     _title: 'Content'
   options:
-    _htmx_route: true   # Uses HtmxRenderer — returns HTML fragment only
+    _htmx_route: true   # Uses HtmxRenderer for an HTMX response
   requirements:
     _permission: 'access content'
     id: '\d+'
@@ -296,7 +299,7 @@ public function buildForm(array $form, FormStateInterface $form_state, string $t
 
 ## Common Mistakes
 
-**Missing library:** HTMX attributes render as static HTML without `core/drupal.htmx` attached. Always attach in `libraries.yml` or `#attached`.
+**Missing library:** HTMX attributes render as static HTML without `core/drupal.htmx` attached. Always attach the bridge in `libraries.yml` or `#attached`; it pulls in `core/htmx`.
 
 **Using bare `hx-*`:** Drupal uses `data-hx-*`. The `Htmx` builder adds the `data-` prefix automatically. In Twig, write `data-hx-get` not `hx-get`.
 

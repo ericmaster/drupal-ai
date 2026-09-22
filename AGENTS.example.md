@@ -1,6 +1,6 @@
-# MY_PROJECT Drupal 11
+# MY_PROJECT Drupal 11.4
 
-Drupal 11 / PHP 8.3 / MySQL 8.0 / DDEV (`my-project`) / Acquia Cloud via GitHub Actions.
+Drupal 11.4 / PHP 8.3 / MySQL 8.0 / DDEV (`my-project`) / Acquia Cloud via GitHub Actions.
 All PHP/Drush commands run inside DDEV. Main branch: `develop`.
 
 ## Commands
@@ -61,6 +61,6 @@ PHP: Drupal + DrupalPractice PHPCS on `docroot/modules/custom/`, `docroot/themes
 
 ## Testing
 
-- Framework: DTT ExistingSite (`weitzman\DrupalTestTraits\ExistingSiteBase`)
-- Location: `tests/src/ExistingSite/`
-- Run: `ddev exec vendor/bin/phpunit tests/`
+- Choose Unit, Kernel, Functional, FunctionalJavascript, or DTT ExistingSite based on the behavior under test.
+- Keep module tests with the module when the project follows Drupal's module-local convention; otherwise follow the project's `phpunit.xml`.
+- Run the configured PHPUnit suite inside DDEV.

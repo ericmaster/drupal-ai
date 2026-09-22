@@ -1,19 +1,10 @@
 #!/bin/bash
 # Example: Update audiofield module with D11 compatibility patch
 
-# 1. Add patch to composer.json first
-cat >> composer.json <<'EOF'
-{
-  "extra": {
-    "patches": {
-      "drupal/audiofield": {
-        "Drupal 11 .info.yml support": "patches/audiofield-d11-info.patch",
-        "Fix file_validate_extensions deprecation": "https://www.drupal.org/files/issues/2024-06-15/audiofield-3432063-12.patch"
-      }
-    }
-  }
-}
-EOF
+# 1. Merge the patch entries under the existing top-level "extra.patches" object
+# in composer.json. Do not append a second root JSON object.
+# Validate after editing:
+ddev composer validate --strict
 
 # 2. Create local .info.yml patch if needed
 cd docroot/modules/contrib/audiofield
@@ -21,16 +12,16 @@ git diff audiofield.info.yml > ../../../patches/audiofield-d11-info.patch
 cd ../../..
 
 # 3. Update module
-composer require drupal/audiofield:^1.13 --with-all-dependencies
+ddev composer require drupal/audiofield:^1.13 --with-all-dependencies
 
 # 4. Run database updates
-drush updb -y
+ddev drush updb -y
 
 # 5. Clear cache
-drush cr
+ddev drush cr
 
 # 6. Verify fix
-drush upgrade_status:analyze audiofield
+ddev drush upgrade_status:analyze audiofield
 
 # 7. Test functionality
 # Visit a page that uses audiofield to ensure no fatal errors

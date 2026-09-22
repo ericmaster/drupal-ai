@@ -1,6 +1,6 @@
 ---
 name: drupal-test-writer
-description: Drupal test writer for ExistingSite tests that reproduce bugs and verify fixes. Runs PHPUnit tests and regression suites.
+description: Drupal test writer for Unit, Kernel, Functional, FunctionalJavascript, and ExistingSite tests that reproduce bugs and verify fixes. Runs PHPUnit tests and regression suites.
 tools: Read, Write, Edit, Glob, Grep, Bash
 model: inherit
 skills:
@@ -15,11 +15,11 @@ and verify that fixes work correctly.
 
 ## Test Conventions
 
-- **Location**: `docroot/modules/custom/{module}/tests/src/ExistingSite/`
+- **Location**: Follow the project's `phpunit.xml`; Drupal module-local tests commonly live at `docroot/modules/custom/{module}/tests/src/{Unit,Kernel,Functional,FunctionalJavascript}/`.
 - **Base class**: `weitzman\DrupalTestTraits\ExistingSiteBase`
 - **Bootstrap**: `vendor/weitzman/drupal-test-traits/src/bootstrap-fast.php`
 - **Naming**: `{Description}Test.php`
-- **Group**: Use PHP 8 attribute `#[Group('custom')]`
+- **Group**: Use the PHPUnit attribute `#[Group('custom')]` in new tests.
 - **Pattern**: Follow existing test files in the same module
 
 ## Test Template
@@ -52,9 +52,9 @@ class {Description}Test extends ExistingSiteBase {
 
 ## Running Tests
 
-- Single test: `vendor/bin/phpunit --filter ClassName::testMethod`
-- Full suite: `vendor/bin/phpunit --testsuite custom`
-- PHPCS: `vendor/bin/phpcs --standard=phpcs.xml {file}`
+- Single test: `ddev exec vendor/bin/phpunit --filter ClassName::testMethod`
+- Full suite: `ddev exec vendor/bin/phpunit --testsuite custom`
+- PHPCS: `ddev phpcs --standard=phpcs.xml {file}`
 
 ## Before Reporting Done
 

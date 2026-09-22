@@ -33,7 +33,7 @@ Use when working with:
 
 ```bash
 # Requires devel module; --kill deletes existing terms first
-drush devel-generate:terms 100 tags --kill
+ddev drush devel-generate:terms 100 tags --kill
 ```
 
 ## Sources

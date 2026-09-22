@@ -16,7 +16,7 @@ Use when working with:
 
 | Scenario | Approach |
 |---|---|
-| Module update | `composer require drupal/module:^X.0 --with-all-dependencies` |
+| Module update | `ddev composer require drupal/module:^X.0 --with-all-dependencies` |
 | D11 compatibility | Check `.info.yml` for `core_version_requirement: ^11` |
 | Patch not applying | Check if merged upstream, find updated patch |
 | Version constraint | Add to `drupal-lenient` allowed-list |
@@ -44,14 +44,14 @@ Use when working with:
 
 ## Complete Update Checklist
 
-- [ ] Check current version: `composer show drupal/module_name`
+- [ ] Check current version: `ddev composer show drupal/module_name`
 - [ ] Search issue queue for known issues
 - [ ] Check D11 compatibility (`.info.yml`)
 - [ ] Add to `drupal-lenient` if needed
 - [ ] Search for and apply necessary patches
-- [ ] Run `composer require drupal/module_name:^X.0 --with-all-dependencies`
-- [ ] Run `drush updb -y && drush cr`
-- [ ] Run `drush upgrade_status:analyze module_name`
+- [ ] Run `ddev composer require drupal/module_name:^X.0 --with-all-dependencies`
+- [ ] Run `ddev drush updb -y && ddev drush cr`
+- [ ] Run `ddev drush upgrade_status:analyze module_name`
 - [ ] Test module functionality by visiting relevant pages
 - [ ] Check for PHP errors: `ddev drush ws --severity=error`
 - [ ] Commit changes with descriptive message
@@ -60,7 +60,7 @@ Use when working with:
 
 ```bash
 # CRITICAL: Always use these flags for production
-composer install --no-dev -o
+ddev composer install --no-dev -o
 # --no-dev: Excludes dev dependencies (phpunit, rector, etc.)
 # -o: Optimizes autoloader for performance
 ```
@@ -79,7 +79,7 @@ ln -s /tmp/module_name docroot/modules/contrib/module_name
 
 # 3. Develop and test, then when done:
 rm docroot/modules/contrib/module_name
-composer install  # Reinstalls from drupal.org
+ddev composer install  # Reinstalls from drupal.org
 ```
 
 Remember: remove symlink before committing project changes.

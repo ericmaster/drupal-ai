@@ -141,6 +141,7 @@ Create `.ddev/commands/web/<name>` (or `host/`, `db/`):
 ## Description: Full site refresh
 ## Usage: refresh
 set -e
+# This script runs inside the web container; Drush is already on PATH.
 drush sql:drop -y && drush sql:cli < /var/www/html/reference.sql
 drush config:import -y && drush updatedb -y && drush cache:rebuild
 ```

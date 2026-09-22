@@ -20,7 +20,7 @@ Your job is to:
 
 ## Before Reporting Done
 
-1. Patch applies cleanly with `git apply` or `composer patches`
+1. Patch applies cleanly with `git apply` or `ddev composer patches`
 2. Tests written cover the bug scenario (fails without patch, passes with it)
 3. PHPCS passes on all changed files
 4. Patch file is clean — no debug code, no unrelated changes

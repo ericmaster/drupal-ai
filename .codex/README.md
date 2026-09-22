@@ -15,7 +15,7 @@ Run this once after cloning. After that, any skill added via `npx skills add` is
 ## Installing skills
 
 ```bash
-npx skills add https://github.com/edutrul/drupal-ai --skill SKILL_NAME
+npx skills add https://github.com/ericmaster/drupal-ai --skill SKILL_NAME
 ```
 
 See [SKILL.md](../SKILL.md) for the full list of available skills.

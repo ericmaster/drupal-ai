@@ -15,7 +15,7 @@ This command takes no arguments. It guides you through a safe configuration expo
 
 1. **Check current status**
    ```bash
-   drush config:status
+   ddev drush config:status
    ```
 
 2. **Review what will be exported**
@@ -23,7 +23,7 @@ This command takes no arguments. It guides you through a safe configuration expo
 
 3. **Export configuration**
    ```bash
-   drush config:export -y
+   ddev drush config:export -y
    ```
 
 4. **Review exported files**

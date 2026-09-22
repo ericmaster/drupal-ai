@@ -5,8 +5,8 @@
 Use when working with:
 
 - Daily Drush commands (`cr`, `cex`, `cim`, `updb`, `ws`)
-- Drush code generators (`drush generate module`, `service`, `controller`)
-- Creating fields non-interactively with `drush field:create`
+- Drush code generators (`ddev drush generate module`, `service`, `controller`)
+- Creating fields non-interactively with `ddev drush field:create`
 - Non-interactive generation with `--answers` JSON
 - Managing users, state, and config via CLI
 - Scaffolding modules and classes for AI-assisted development

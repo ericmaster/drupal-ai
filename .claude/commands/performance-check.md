@@ -20,14 +20,14 @@ If a module path is provided, focus analysis on that module's code. Otherwise, c
 
 ```bash
 # Page cache
-drush config:get system.performance cache.page.max_age
+ddev drush config:get system.performance cache.page.max_age
 
 # CSS/JS aggregation
-drush config:get system.performance css.preprocess
-drush config:get system.performance js.preprocess
+ddev drush config:get system.performance css.preprocess
+ddev drush config:get system.performance js.preprocess
 
 # Twig cache (should NOT be disabled in production)
-drush php:eval "var_dump(\$settings['cache']['bins']['render'] ?? 'default');"
+ddev drush php:eval "var_dump(\$settings['cache']['bins']['render'] ?? 'default');"
 ```
 
 **Production should have:**
@@ -40,10 +40,10 @@ drush php:eval "var_dump(\$settings['cache']['bins']['render'] ?? 'default');"
 
 ```bash
 # What cache backends are configured?
-drush php:eval "print_r(\$settings['cache']['default'] ?? 'database');"
+ddev drush php:eval "print_r(\$settings['cache']['default'] ?? 'database');"
 
 # List all cache bins
-drush cache:list
+ddev drush cache:list
 ```
 
 **Recommendations:**
@@ -53,8 +53,8 @@ drush cache:list
 ### 3. Review BigPipe Status
 
 ```bash
-drush pm:list --filter=big_pipe
-drush config:get big_pipe.settings
+ddev drush pm:list --filter=big_pipe
+ddev drush config:get big_pipe.settings
 ```
 
 BigPipe should be enabled for authenticated user performance.
@@ -63,10 +63,10 @@ BigPipe should be enabled for authenticated user performance.
 
 ```bash
 # Show slow query log (if enabled)
-drush watchdog:show --filter="type=php" --severity=warning --count=20
+ddev drush watchdog:show --filter="type=php" --severity=warning --count=20
 
 # Check database size
-drush sql:query "SELECT table_name, round(((data_length + index_length) / 1024 / 1024), 2) AS 'Size (MB)' FROM information_schema.tables WHERE table_schema = DATABASE() ORDER BY (data_length + index_length) DESC LIMIT 10;"
+ddev drush sql:query "SELECT table_name, round(((data_length + index_length) / 1024 / 1024), 2) AS 'Size (MB)' FROM information_schema.tables WHERE table_schema = DATABASE() ORDER BY (data_length + index_length) DESC LIMIT 10;"
 ```
 
 Look for:
@@ -112,10 +112,10 @@ grep -rB5 "->load(" docroot/modules/custom/ | grep -A5 "foreach"
 
 ```bash
 # List all views
-drush views:list
+ddev drush views:list
 
 # Check views with lots of results
-drush views:analyze
+ddev drush views:analyze
 ```
 
 Common views issues:
@@ -147,10 +147,10 @@ public function getExpensiveData(string $id): array {
 
 ```bash
 # Last cron run
-drush core:cron --verbose 2>&1 | head -5
+ddev drush core:cron --verbose 2>&1 | head -5
 
 # Queue status
-drush queue:list
+ddev drush queue:list
 ```
 
 For heavy processing:
@@ -196,26 +196,17 @@ Best practices:
 
 ## Quick Wins Checklist
 
-> **Warning:** This project uses `config_split` — `config:set` modifies active config but does NOT write to files. Always follow with `drush cex` and commit the exported config, otherwise changes will be lost on next `cim`.
-
-```bash
-# Enable all standard performance settings
-drush config:set system.performance cache.page.max_age 3600
-drush config:set system.performance css.preprocess true
-drush config:set system.performance js.preprocess true
-drush en big_pipe
-drush cache:rebuild
-
-# Export config changes to files (required — see warning above)
-drush cex -y
-```
+This command is an audit and must remain read-only. Do not enable modules or write active
+configuration as part of a performance check. If the report recommends a configuration change,
+apply it in a separately reviewed deployment workflow and export it with the project's config
+management process.
 
 ## Monitoring Recommendations
 
 For ongoing performance monitoring:
 - **New Relic** or **Blackfire** for APM
 - **Grafana + Prometheus** for metrics
-- **`drush pm:security`** in CI for update alerts
+- **`ddev drush pm:security`** in CI for update alerts
 - Regular database maintenance (optimize tables)
 
 ## Further Reading

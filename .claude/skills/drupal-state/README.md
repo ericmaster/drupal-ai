@@ -7,7 +7,7 @@ Use when working with:
 - Storing runtime operational data that persists across requests
 - Tracking cron run times, migration offsets, or feature flags
 - Reading and writing state via `StateInterface`
-- Inspecting or setting state values with `drush state:get/set`
+- Inspecting or setting state values with `ddev drush state:get/set`
 - Deciding between State, Config, and Cache for a given use case
 
 ## Mental Model

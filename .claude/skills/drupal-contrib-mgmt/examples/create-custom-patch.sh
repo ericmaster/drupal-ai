@@ -8,7 +8,7 @@ echo "Creating custom patch for licensing module user_roles() deprecation"
 
 # Step 1: Verify the issue
 echo "Step 1: Checking current code..."
-drush upgrade_status:analyze licensing
+ddev drush upgrade_status:analyze licensing
 
 # Shows: "Call to deprecated function user_roles() at line 77"
 
@@ -97,23 +97,20 @@ cd ../../..
 
 echo "Step 9: Adding patch to composer.json..."
 
-# Edit composer.json to add:
-cat >> composer.json <<'EOF'
-{
-  "extra": {
-    "patches": {
-      "drupal/licensing": {
-        "Replace deprecated user_roles() for D11 compatibility": "patches/licensing-user-roles-d11-fix.patch",
-        "Drupal 11 .info.yml support": "patches/licensing-d11-info.patch"
-      }
-    }
-  }
-}
-EOF
+# Merge this fragment under the existing top-level "extra" object in composer.json.
+# Do not append a second root JSON object; composer.json must remain one valid JSON document.
+#
+# "patches": {
+#   "drupal/licensing": {
+#     "Replace deprecated user_roles() for D11 compatibility": "patches/licensing-user-roles-d11-fix.patch",
+#     "Drupal 11 .info.yml support": "patches/licensing-d11-info.patch"
+#   }
+# }
+ddev composer validate --strict
 
 # Step 10: Apply via composer
 echo "Step 10: Applying patch via composer..."
-composer install
+ddev composer install
 
 # Should show:
 # - Applying patches for drupal/licensing
@@ -121,8 +118,8 @@ composer install
 
 # Step 11: Test
 echo "Step 11: Testing..."
-drush cr
-drush upgrade_status:analyze licensing
+ddev drush cr
+ddev drush upgrade_status:analyze licensing
 
 # Should now show: "No known issues found"
 
@@ -135,7 +132,7 @@ Manual testing:
 4. Save and verify
 "
 
-drush watchdog:show --severity=Error --count=10
+ddev drush watchdog:show --severity=Error --count=10
 
 # Step 12: Commit
 git add composer.json composer.lock patches/licensing-user-roles-d11-fix.patch

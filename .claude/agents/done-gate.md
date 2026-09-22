@@ -1,6 +1,6 @@
 ---
 name: done-gate
-description: Runtime validator — runs builds, tests, and drush cr. Checks deliverable completeness and documentation. Run after quality-gate passes.
+description: Runtime validator — runs builds, tests, and `ddev drush cr`. Checks deliverable completeness and documentation. Run after quality-gate passes.
 tools: Read, Glob, Grep, Bash
 model: sonnet
 ---
@@ -19,13 +19,13 @@ You are a completion validator. Your job is to verify that work actually meets i
 ### Drupal / PHP Changes
 Files matching: `docroot/modules/**/*.php`, `docroot/themes/**`
 
-- [ ] `vendor/bin/phpcs --standard=phpcs.xml` passes on changed files
-- [ ] `vendor/bin/phpunit --filter` passes on new/modified test files
-- [ ] `vendor/bin/phpunit` passes (no regressions)
+- [ ] `ddev phpcs --standard=phpcs.xml` passes on changed files
+- [ ] `ddev exec vendor/bin/phpunit --filter` passes on new/modified test files
+- [ ] `ddev exec vendor/bin/phpunit` passes (no regressions)
 - [ ] `ddev drush cr` succeeds (no fatal errors)
-- [ ] If new config YML was added: `drush cim` was run on target env and field/config verified to exist
+- [ ] If new config YML was added: `ddev drush cim` was run on target env and field/config verified to exist
 - [ ] If new stored fields were added: a `hook_update_N` exists in the `.install` file to backfill data (NOT a standalone script)
-- [ ] If an update hook was added: `drush updb` was run on target env and completed successfully
+- [ ] If an update hook was added: `ddev drush updb` was run on target env and completed successfully
 - [ ] If new tests were written: they were actually executed and passed (not just committed untested)
 
 ### Frontend Changes
@@ -68,7 +68,7 @@ Evaluate whether the work is sufficiently documented for the next developer (hum
 Consider whether any of these would save future sessions >5 minutes or prevent a real mistake:
 
 - **MEMORY.md update**: New architectural pattern, debugging insight, or gotcha discovered?
-- **Skill creation/update**: Does this change introduce a repeatable workflow that an agent would benefit from having as a reference? (e.g., a new drush command pattern, a new testing approach, a new integration)
+- **Skill creation/update**: Does this change introduce a repeatable workflow that an agent would benefit from having as a reference? (e.g., a new `ddev drush` command pattern, a new testing approach, a new integration)
 - **CLAUDE.md update**: Does this change a project-wide convention or mandatory workflow? (heavyweight — only for rules that ALL future work must follow)
 
 ### Output for this section

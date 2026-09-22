@@ -74,7 +74,7 @@ HTML comments in source will show template suggestions:
 
 ```bash
 # Install devel
-composer require drupal/devel
+ddev composer require drupal/devel
 ddev drush en devel -y
 ```
 
@@ -142,7 +142,7 @@ ddev drush pm:info my_module
 
 | Problem | Solution |
 |---|---|
-| Class not found | Check namespace, PSR-4 in .info.yml, run `composer dump-autoload` |
+| Class not found | Check namespace, PSR-4 in .info.yml, run `ddev composer dump-autoload` |
 | Service not found | Check services.yml syntax, run `ddev drush cr` |
 | Template not used | Enable Twig debug, check template suggestions in HTML comments |
 | Hook not firing | Check class is registered in services.yml, verify Hook attribute |
@@ -163,4 +163,3 @@ ddev xdebug status
 ```
 
 Configure IDE (PHPStorm) to listen on port 9003.
-

@@ -19,7 +19,7 @@ If a path is provided, focus the audit on that module or directory. Otherwise, a
 ### 1. Check Module Security Updates
 
 ```bash
-drush pm:security
+ddev drush pm:security
 ```
 
 Review any modules with known security vulnerabilities. **These should be updated immediately.**
@@ -27,7 +27,7 @@ Review any modules with known security vulnerabilities. **These should be update
 ### 2. Check All Outdated Modules
 
 ```bash
-composer outdated drupal/*
+ddev composer outdated drupal/*
 ```
 
 Outdated modules may have unpatched vulnerabilities even without security advisories.
@@ -35,8 +35,8 @@ Outdated modules may have unpatched vulnerabilities even without security adviso
 ### 3. Review User Permissions
 
 ```bash
-drush role:list
-drush user:role:list --roles=administrator
+ddev drush role:list
+ddev drush user:role:list --roles=administrator
 ```
 
 Check for:
@@ -104,10 +104,10 @@ grep -r "\\Drupal::" docroot/modules/custom/src/
 ### 7. Check Drupal Security Settings
 
 ```bash
-drush config:get system.site page.403
-drush config:get system.site page.404
-drush config:get system.performance css.preprocess
-drush config:get system.performance js.preprocess
+ddev drush config:get system.site page.403
+ddev drush config:get system.site page.404
+ddev drush config:get system.performance css.preprocess
+ddev drush config:get system.performance js.preprocess
 ```
 
 Production sites should have:
@@ -117,7 +117,7 @@ Production sites should have:
 ### 8. Review Trusted Host Patterns
 
 ```bash
-drush php:eval "print_r(\$settings['trusted_host_patterns'] ?? 'NOT SET');"
+ddev drush php:eval "print_r(\$settings['trusted_host_patterns'] ?? 'NOT SET');"
 ```
 
 **This MUST be set in production** to prevent host header attacks.
@@ -126,8 +126,8 @@ drush php:eval "print_r(\$settings['trusted_host_patterns'] ?? 'NOT SET');"
 
 ```bash
 # These should be FALSE in production
-drush php:eval "var_dump(\$config['system.logging']['error_level']);"
-drush php:eval "var_dump(\$settings['twig_debug'] ?? false);"
+ddev drush php:eval "var_dump(\$config['system.logging']['error_level']);"
+ddev drush php:eval "var_dump(\$settings['twig_debug'] ?? false);"
 ```
 
 Production settings:
@@ -138,7 +138,7 @@ Production settings:
 
 ```bash
 # Check for direct database access attempts in logs
-drush watchdog:show --filter="type=php" --count=20
+ddev drush watchdog:show --filter="type=php" --count=20
 ```
 
 ## Security Report Format
@@ -168,18 +168,18 @@ Organize findings by severity:
 
 ## Automated Scanning Tools
 
-For deeper analysis, recommend:
+For deeper analysis, recommend the following commands. Keep this audit read-only: do not enable a
+module or mutate active configuration as an audit side effect.
 
 ```bash
-# Drupal Security Review module
-drush en security_review
-drush security:review
+# Drupal Security Review module, only when it is already installed
+ddev drush security:review
 
 # PHP CodeSniffer with security sniffs
-phpcs docroot/modules/custom/
+ddev phpcs docroot/modules/custom/
 
 # Composer audit
-composer audit
+ddev composer audit
 ```
 
 ## Post-Audit Actions

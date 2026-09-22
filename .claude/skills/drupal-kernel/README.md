@@ -21,7 +21,7 @@ Use when working with:
 | Setup method | Purpose |
 |---|---|
 | `installEntitySchema('node')` | Create entity DB tables |
-| `installSchema('system', [...])` | Create specific DB tables |
+| `installSchema('module', [...])` | Create specific non-entity DB tables; do not add the deprecated `system.sequences` table |
 | `installConfig('my_module')` | Load module's config/install/ |
 
 ## Example Prompts
@@ -36,7 +36,7 @@ Use when working with:
 Examples assume a `docroot/`-based Drupal project. If your project uses `web/` or another document root, adjust paths accordingly.
 
 ```bash
-# Run kernel tests for a module
+# Run kernel tests for a module. Adjust the web root and PHPUnit config path.
 ddev exec vendor/bin/phpunit docroot/modules/custom/my_module/tests/src/Kernel/
 
 # Run specific test
@@ -46,7 +46,7 @@ ddev exec vendor/bin/phpunit docroot/modules/custom/my_module/tests/src/Kernel/M
 ## Generate Scaffold
 
 ```bash
-drush generate test:kernel --answers='{
+ddev drush generate test:kernel --answers='{
   "module": "my_module",
   "class": "MyServiceTest"
 }'

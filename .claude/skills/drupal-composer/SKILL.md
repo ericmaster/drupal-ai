@@ -8,13 +8,13 @@ description: Drupal Composer management — requiring modules, updates, patches 
 ## Installing & Updating
 
 ```bash
-composer require drupal/module_name
-composer require drupal/module_name:^2.0
-composer require drupal/module_name:^1.0@dev
-composer update drupal/module_name
-composer update drupal/*
-composer outdated drupal/*
-composer audit
+ddev composer require drupal/module_name
+ddev composer require drupal/module_name:^2.0
+ddev composer require drupal/module_name:^1.0@dev
+ddev composer update drupal/module_name
+ddev composer update drupal/*
+ddev composer outdated drupal/*
+ddev composer audit
 ```
 
 ## Version Constraints
@@ -41,13 +41,11 @@ composer audit
 }
 ```
 
-Patches apply on `composer install` and re-apply on `composer update drupal/module_name`.
+Patches apply on `ddev composer install` and re-apply on `ddev composer update drupal/module_name`.
 
 ## Useful Commands
 
 ```bash
-composer show drupal/module_name
-composer validate
-composer clear-cache
-composer install --no-cache
+ddev composer show drupal/module_name
+ddev composer validate
 ```

@@ -82,16 +82,15 @@ $this->state->set('my_module.api_token_expires', $expires);
 
 ```bash
 # Get
-drush state:get my_module.last_run
+ddev drush state:get my_module.last_run
 
 # Set
-drush state:set my_module.feature_enabled 1
+ddev drush state:set my_module.feature_enabled 1
 
 # Delete
-drush state:del my_module.last_run
+ddev drush state:del my_module.last_run
 ```
 
 ## Service ID
 
 `state`
-

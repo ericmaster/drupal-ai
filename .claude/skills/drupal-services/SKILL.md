@@ -98,11 +98,10 @@ Add `use StringTranslationTrait;` to classes that need `$this->t()` without full
 ## Generating Services with Drush
 
 ```bash
-drush generate service --answers='{
+ddev drush generate service --answers='{
   "module": "my_module",
   "service_name": "my_module.helper",
   "class": "HelperService",
   "services": ["entity_type.manager", "logger.factory"]
 }'
 ```
-

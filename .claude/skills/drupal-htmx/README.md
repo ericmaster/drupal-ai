@@ -5,7 +5,7 @@
 Use when working with:
 
 - Making form fields update other fields without a full page reload
-- Building partial routes that return HTML fragments (not full pages)
+- Building HTMX routes rendered through Drupal's HTMX response pipeline
 - Applying the `Htmx` PHP fluent builder to render arrays
 - Using `_htmx_route: true` in `routing.yml` for HTMX-only endpoints
 - Triggering browser URL updates from HTMX responses (`pushUrlHeader`)
@@ -17,12 +17,13 @@ Use when working with:
 
 | Concept | What it means |
 |---|---|
-| `core/drupal.htmx` | The library to attach — includes htmx vendor + Drupal bridge |
+| `core/htmx` | The vendor HTMX 2.0.4 library |
+| `core/drupal.htmx` | The library to attach — Drupal's HTMX bridge, which depends on `core/htmx` |
 | `Htmx` class | PHP fluent builder that writes `data-hx-*` attributes onto render arrays |
 | `applyTo($element)` | Writes the built attributes onto the element's `#attributes` |
 | `applyTo($el, '#wrapper_attributes')` | Targets the wrapper div instead |
 | `swap('none') + swapOob('true')` | Key combo for dependent selects — don't replace trigger, replace elsewhere |
-| `_htmx_route: true` | Route option that uses `HtmxRenderer` — returns fragment only, no page shell |
+| `_htmx_route: true` | Route option that uses `HtmxRenderer` for an HTMX response document |
 | `onlyMainContent()` | Adds `data-hx-drupal-only-main-content` — JS bridge appends `?_wrapper_format=drupal_htmx` |
 | Response headers | Set on the render array via `$htmx->pushUrlHeader()` etc., sent with the response |
 | `Drupal.behaviors` | Auto-attached/detached on every HTMX swap — no extra wiring needed |

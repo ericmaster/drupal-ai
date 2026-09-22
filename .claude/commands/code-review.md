@@ -1,7 +1,7 @@
 ---
 name: code-review
 description: Full code review of a branch, PR, or Jira ticket. Accepts a Jira ticket ID (e.g. TICKET-123), branch name, or PR number as optional input. Defaults to current branch. Runs static analysis, PHPCS, PHPStan, and Drupal best-practice checks.
-allowed-tools: Bash(git branch --show-current:), Bash(git diff *:), Bash(git log *:), Bash(git fetch *:), Bash(gh pr view *:), Bash(gh pr diff *:), Bash(ddev describe:), Bash(phpcs *:), Bash(phpstan:), Bash(drush cr:), Agent, Read, Glob, Grep
+allowed-tools: Bash(git branch --show-current:), Bash(git diff *:), Bash(git log *:), Bash(git fetch *:), Bash(gh pr view *:), Bash(gh pr diff *:), Bash(ddev describe:), Bash(ddev phpcs *:), Bash(ddev phpstan:), Bash(ddev drush cr:), Agent, Read, Glob, Grep
 ---
 
 # Code Review
@@ -102,7 +102,7 @@ Filter changed files to those in PHPCS scope:
 For each matching file, run:
 
 ```bash
-phpcs <file-path>
+ddev phpcs <file-path>
 ```
 
 Collect all output. Store raw results — use them as-is in the report.
@@ -114,7 +114,7 @@ If no in-scope PHP files → note "PHPCS: no in-scope files" and skip.
 ## Step 4 — Run PHPStan
 
 ```bash
-phpstan
+ddev phpstan
 ```
 
 Collect output. Store raw results.
@@ -137,7 +137,7 @@ The quality-gate agent is read-only — it will not modify files.
 ## Step 6 — Clear cache check (done-gate)
 
 ```bash
-drush cr
+ddev drush cr
 ```
 
 If this fails → flag it as a blocker in the report.
@@ -184,12 +184,12 @@ From quality-gate results:
 
 From quality-gate results:
 - `\Drupal::` static calls in classes
-- naming convention violations (module prefix, constants — as defined in `project.md`)
+- naming convention violations (module prefix and constants — as defined by the project's agent guide)
 - wrong module placement
 
 ### Cache
 
-If `drush cr` passed → `✅ Cache: clear`
+If `ddev drush cr` passed → `✅ Cache: clear`
 If failed → `🚨 Cache: failed — investigate before merging`
 
 ### Overall verdict

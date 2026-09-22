@@ -1,9 +1,9 @@
 ---
 name: drupal-hooks
-description: Drupal 11 OOP and procedural hooks — hook_form_alter, hook_node_presave, hook_theme, #[Hook] attribute, and when to use hooks vs event subscribers.
+description: Drupal 11.1+ OOP and procedural hooks - hook_form_alter, hook_node_presave, hook_theme, #[Hook] attribute, 11.2+ hook ordering, and when to use hooks vs event subscribers.
 ---
 
-# Drupal Hooks (Drupal 11)
+# Drupal Hooks (Drupal 11.1+)
 
 ## OOP Hooks (Preferred)
 
@@ -11,7 +11,7 @@ description: Drupal 11 OOP and procedural hooks — hook_form_alter, hook_node_p
 |---|---|
 | **Location** | `src/Hook/MyModuleHooks.php` |
 | **Namespace** | `Drupal\my_module\Hook` |
-| **Auto-registered** | Drupal 11.1+ (no services.yml needed) |
+| **Auto-registered** | Drupal 11.1+ when the class/method uses `#[Hook]` |
 | **DI support** | Constructor injection |
 | **Testable** | Yes — instantiate directly, inject mocks |
 
@@ -80,13 +80,16 @@ final class MyModuleHooks {
 }
 ```
 
-> **Note:** If a hook is not executed, verify namespace and location. OOP hooks outside `src/Hook/` require manual service registration.
+> **Note:** If a hook is not executed, verify the attribute, namespace, cache rebuild, and module
+> discovery. `src/Hook/` is the recommended location. Attributed hook classes are autowired by
+> Drupal; classes that are not attributed or need explicit overrides may still be registered in
+> `services.yml`.
 
 ## services.yml
 
 | Scenario | Required? |
 |---|---|
-| Class in `src/Hook/`, namespace `Drupal\my_module\Hook` | No — auto-registered (Drupal 11.1+) |
+| Attributed class in `src/Hook/`, namespace `Drupal\my_module\Hook` | No — auto-registered (Drupal 11.1+) |
 | Class outside `src/Hook/` (e.g. a custom service) | Yes — register manually |
 
 When registration is needed — autowire resolves constructor dependencies by type hint:
@@ -119,7 +122,29 @@ services:
 
 ## Procedural Hooks (.module)
 
-Auto-discovered via `my_module_hook_name()` naming. Still valid; prefer OOP hooks for new code.
+Auto-discovered via `my_module_hook_name()` naming. They remain required for legacy meta hooks and
+the install, update, schema, and uninstall hook families. Hooks implemented by themes remain
+procedural. A module's runtime `hook_theme()` implementation may use `#[Hook('theme')]`. For runtime
+hooks in new Drupal 11.1+ code, prefer the OOP form. Use `LegacyHook` when an attribute
+implementation must also support older Drupal versions.
+
+## Hook Ordering (Drupal 11.2+)
+
+Use the `order` parameter when one implementation must run before or after a specific module or
+class/method. The order target must be explicit:
+
+```php
+use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Hook\Order\OrderBefore;
+
+#[Hook('node_presave', order: new OrderBefore(modules: ['other_module']))]
+public function nodePresave(NodeInterface $node): void {
+  // ...
+}
+```
+
+Use ordering sparingly. Prefer independent behavior when a hook implementation does not need a
+cross-module execution dependency.
 
 ## Hooks vs Event Subscribers
 
@@ -134,5 +159,7 @@ Auto-discovered via `my_module_hook_name()` naming. Still valid; prefer OOP hook
 ## RULES (IMPORTANT)
 
 - ALWAYS prefer OOP hooks in `src/Hook/` for new implementations
-- NEVER add new hooks in `.module` unless explicitly requested
-- If procedural hook exists, suggest refactoring to OOP
+- Do not add a procedural runtime hook when an OOP hook is supported and the project targets Drupal 11.1+.
+- Do not refactor procedural-only install, update, schema, or uninstall hooks to OOP hooks.
+- Keep theme implementations procedural; do not confuse them with a module's `hook_theme()` implementation.
+- When reviewing a procedural hook, first check whether the project needs backwards compatibility.

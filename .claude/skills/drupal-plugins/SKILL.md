@@ -97,12 +97,12 @@ public function blockSubmit(array $form, FormStateInterface $form_state): void {
 ## Plugin Generators
 
 ```bash
-drush generate plugin:block
-drush generate plugin:field:formatter
-drush generate plugin:field:widget
-drush generate plugin:field:type
-drush generate plugin:condition
-drush generate plugin:filter
+ddev drush generate plugin:block
+ddev drush generate plugin:field:formatter
+ddev drush generate plugin:field:widget
+ddev drush generate plugin:field:type
+ddev drush generate plugin:condition
+ddev drush generate plugin:filter
 ```
 
 ## Mental Model
@@ -114,4 +114,3 @@ drush generate plugin:filter
 | **DI** | Requires `ContainerFactoryPluginInterface` |
 | **Manager** | Each plugin type has its own manager (e.g., `BlockManager`) |
 | **Plugin ID** | Must be unique — used internally by Drupal to identify the plugin |
-

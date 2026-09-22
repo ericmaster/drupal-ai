@@ -22,12 +22,14 @@ namespace Drupal\Tests\my_module\Kernel;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests MyService integration.
- *
- * @group my_module
  */
+#[Group('my_module')]
+#[RunTestsInSeparateProcesses]
 final class MyServiceTest extends KernelTestBase {
 
   protected static $modules = [
@@ -42,7 +44,6 @@ final class MyServiceTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->installSchema('system', ['sequences']);
     $this->installSchema('node', ['node_access']);
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
@@ -78,8 +79,8 @@ $this->installEntitySchema('user');
 $this->installEntitySchema('taxonomy_term');
 $this->installEntitySchema('paragraph');
 
-// For specific table schemas (not entity-based)
-$this->installSchema('system', ['sequences', 'key_value']);
+// For specific table schemas (not entity-based). Do not install the
+// deprecated system.sequences table in new Drupal 11 tests.
 $this->installSchema('node', ['node_access']);
 
 // For config from a module's config/install
@@ -127,4 +128,3 @@ public function testHookNodePresave(): void {
   $this->assertEquals('Modified by hook', $node->get('field_processed')->value);
 }
 ```
-

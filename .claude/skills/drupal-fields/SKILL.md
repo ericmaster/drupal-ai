@@ -8,14 +8,14 @@ description: Drupal fields — field types, widgets, formatters, drush field:cre
 
 ## Creating Fields (Drush — CLI First)
 
-**Always use `drush field:create` instead of manually creating field config files.**
+**Always use `ddev drush field:create` instead of manually creating field config files.**
 
 ```bash
 # Interactive (recommended first time)
-drush field:create
+ddev drush field:create
 
 # Non-interactive
-drush field:create node article \
+ddev drush field:create node article \
   --field-name=field_subtitle \
   --field-label="Subtitle" \
   --field-type=string \
@@ -24,7 +24,7 @@ drush field:create node article \
   --cardinality=1
 
 # Reference field
-drush field:create node article \
+ddev drush field:create node article \
   --field-name=field_tags \
   --field-label="Tags" \
   --field-type=entity_reference \
@@ -33,7 +33,7 @@ drush field:create node article \
   --target-type=taxonomy_term
 
 # Image field
-drush field:create node article \
+ddev drush field:create node article \
   --field-name=field_image \
   --field-label="Image" \
   --field-type=image \
@@ -46,30 +46,30 @@ drush field:create node article \
 
 ```bash
 # List all fields on a content type
-drush field:info node article
+ddev drush field:info node article
 
 # Delete a field
-drush field:delete node.article.field_subtitle
+ddev drush field:delete node.article.field_subtitle
 
 # Discover available types/widgets/formatters
-drush field:types
-drush field:widgets
-drush field:formatters
+ddev drush field:types
+ddev drush field:widgets
+ddev drush field:formatters
 ```
 
 ## Export After Creating Fields
 
 ```bash
 # Always export config after CLI changes
-drush config:export -y
+ddev drush config:export -y
 ```
 
 ## Custom Field Type (Plugin)
 
 ```bash
-drush generate plugin:field:type
-drush generate plugin:field:formatter
-drush generate plugin:field:widget
+ddev drush generate plugin:field:type
+ddev drush generate plugin:field:formatter
+ddev drush generate plugin:field:widget
 ```
 
 ## Accessing Field Values in Code

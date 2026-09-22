@@ -7,35 +7,42 @@ description: Testing conventions — framework choice, test location, structure,
 
 ## Framework
 
-This project uses **DTT (Drupal Test Traits) ExistingSite** tests via `weitzman\DrupalTestTraits\ExistingSiteBase`.
+Choose the smallest test type that exercises the behavior:
 
-- Do not create Unit, Kernel, or Functional tests — use ExistingSite tests
-- ExistingSite tests run against a live Drupal site (DDEV) — no mocking of the full stack
+- **Unit** for pure PHP logic with no Drupal bootstrap.
+- **Kernel** for services, database operations, entities, hooks, and configuration with a partial
+  Drupal bootstrap.
+- **Functional** or **FunctionalJavascript** for an installed site and browser-visible behavior.
+- **DTT ExistingSite** for integration tests against an existing configured site.
+
+Use the test type already configured by the project; do not force every behavior into ExistingSite.
 
 ## Test Location
 
-All tests live at the **project root** `tests/src/ExistingSite/` — not inside individual modules.
+Follow the project's `phpunit.xml` and existing test layout. Drupal module-local tests commonly live
+under `docroot/modules/custom/{module}/tests/src/{Unit,Kernel,Functional,FunctionalJavascript}`;
+some projects keep DTT tests under a root `tests/` directory.
 
 ```
-tests/src/ExistingSite/
-└── MyFeatureTest.php
+docroot/modules/custom/my_module/tests/src/Kernel/
+└── MyServiceTest.php
 ```
 
 ## Running Tests
 
 ```bash
-vendor/bin/phpunit tests/
+ddev exec vendor/bin/phpunit -c <web-root>/core/phpunit.xml.dist docroot/modules/custom/my_module/tests
 ```
 
 Filter by group:
 ```bash
-vendor/bin/phpunit tests/ --filter=my_group
+ddev exec vendor/bin/phpunit -c <web-root>/core/phpunit.xml.dist --filter=my_group docroot/modules/custom/my_module/tests
 ```
 
 ## Structure
 
-- Extend `ExistingSiteBase`
-- Group by module name using `@group my_group`
+- Extend the base class for the selected test type.
+- Group by module name using `#[Group('my_group')]` in new PHPUnit code.
 - Class name ends in `Test`
 - Test method names start with `test`
 
@@ -49,8 +56,8 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
 /**
  * Tests for the my_group module.
  *
- * @group my_group
  */
+#[\PHPUnit\Framework\Attributes\Group('my_group')]
 final class MyModuleExampleTest extends ExistingSiteBase {
 
   public function testSomething(): void {
@@ -69,6 +76,6 @@ final class MyModuleExampleTest extends ExistingSiteBase {
 
 ## What NOT to Test
 
-- Internal PHP logic in isolation (no unit tests)
+- Do not use an integration test for internal PHP logic that can be covered by a unit test
 - Database schema or entity structure directly
 - Things already covered by Drupal core or contrib tests

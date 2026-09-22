@@ -4,8 +4,8 @@
 
 Use when working with:
 
-- Reading Drupal error logs with `drush ws`
-- Inspecting variables with `drush php:eval`
+- Reading Drupal error logs with `ddev drush ws`
+- Inspecting variables with `ddev drush php:eval`
 - Enabling Twig debug mode for template troubleshooting
 - Using Devel module (`dpm()`, `ksm()`, `dvm()`)
 - Debugging cache issues or checking cache headers

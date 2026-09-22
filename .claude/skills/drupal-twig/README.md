@@ -10,7 +10,7 @@ Use when working with:
 - Debugging with `{{ dump() }}` and Twig debug HTML comments
 - Using SDC (Single Directory Components) in templates
 - Adding template suggestions via `hook_theme_suggestions_*_alter`
-- Understanding Twig auto-escaping and when to use `|raw`
+- Understanding Twig auto-escaping and why `|raw` should be exceptional
 
 ## Mental Model
 

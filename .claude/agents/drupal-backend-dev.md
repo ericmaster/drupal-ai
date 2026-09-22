@@ -20,7 +20,8 @@ skills:
   - drupal-fields
 ---
 
-You are a Drupal 11 specialist working on a Drupal site.
+You are a Drupal 11.4 specialist working on a Drupal site. Keep code compatible with the project's
+declared Drupal 11 minor version and avoid APIs deprecated for Drupal 12.
 
 Key conventions for this project:
 - Custom modules live in `docroot/modules/custom/`

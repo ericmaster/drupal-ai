@@ -9,7 +9,7 @@ Use when working with:
 - Implementing Condition or Filter plugins
 - Using `ContainerFactoryPluginInterface` for DI in plugins
 - Converting annotation-based plugins to PHP attributes (Drupal 11)
-- Generating plugin scaffolding with `drush generate plugin:block`
+- Generating plugin scaffolding with `ddev drush generate plugin:block`
 
 ## Mental Model
 
@@ -38,18 +38,18 @@ Use when working with:
 ## Plugin Generators
 
 ```bash
-drush generate plugin:block
-drush generate plugin:field:formatter
-drush generate plugin:field:widget
-drush generate plugin:field:type
-drush generate plugin:condition
-drush generate plugin:filter
+ddev drush generate plugin:block
+ddev drush generate plugin:field:formatter
+ddev drush generate plugin:field:widget
+ddev drush generate plugin:field:type
+ddev drush generate plugin:condition
+ddev drush generate plugin:filter
 ```
 
 Non-interactive (for scripted scaffolding):
 
 ```bash
-drush generate plugin:block --answers='{
+ddev drush generate plugin:block --answers='{
   "module": "my_module",
   "plugin_id": "my_block",
   "admin_label": "My Block",

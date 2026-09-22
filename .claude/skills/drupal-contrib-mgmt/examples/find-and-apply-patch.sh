@@ -36,28 +36,24 @@ patch -p1 --dry-run < audiofield-file-validator-3432063-12.patch
 echo "✓ Patch applies cleanly"
 cd ../../..
 
-# Step 5: Add to composer.json
-cat >> composer.json <<'EOF'
-{
-  "extra": {
-    "patches": {
-      "drupal/audiofield": {
-        "Replace deprecated file_validate_extensions() - https://drupal.org/node/3432063": "https://www.drupal.org/files/issues/2024-06-15/audiofield-file-validator-3432063-12.patch"
-      }
-    }
-  }
-}
-EOF
+# Step 5: Merge this patch entry under the existing top-level "extra.patches" object
+# in composer.json. Do not append a second root JSON object.
+#
+# "drupal/audiofield": {
+#   "Replace deprecated file_validate_extensions() - https://drupal.org/node/3432063":
+#     "https://www.drupal.org/files/issues/2024-06-15/audiofield-file-validator-3432063-12.patch"
+# }
+ddev composer validate --strict
 
 # Step 6: Apply patch via composer
-composer install
+ddev composer install
 
 # Or if module needs updating too:
-# composer require drupal/audiofield:^1.13 --with-all-dependencies
+# ddev composer require drupal/audiofield:^1.13 --with-all-dependencies
 
 # Step 7: Verify
-drush cr
-drush upgrade_status:analyze audiofield
+ddev drush cr
+ddev drush upgrade_status:analyze audiofield
 
 echo "✓ Deprecation should be resolved"
 
@@ -71,7 +67,7 @@ Manual testing checklist:
 - Check for PHP errors in logs
 "
 
-drush watchdog:show --severity=Error --count=10
+ddev drush watchdog:show --severity=Error --count=10
 
 # Step 9: Commit
 git add composer.json composer.lock

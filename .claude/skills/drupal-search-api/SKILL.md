@@ -162,7 +162,7 @@ ddev drush config:set search_api.index.{index_name} \
 
 ### Direct Config Updates with PHP
 
-When `drush config:set` fails or produces unexpected results (e.g., side effects on unrelated config), use PHP to directly update active configuration:
+When `ddev drush config:set` fails or produces unexpected results (e.g., side effects on unrelated config), use PHP to directly update active configuration:
 
 ```bash
 ddev drush php:eval "

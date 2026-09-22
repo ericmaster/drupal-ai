@@ -318,16 +318,16 @@ After generating the module:
 
 ```bash
 # Enable the module
-drush en my_module
+ddev drush en my_module
 
 # Clear cache
-drush cr
+ddev drush cr
 
 # Verify module is enabled
-drush pm:list --filter=my_module
+ddev drush pm:list --filter=my_module
 
-# Run tests (DTT ExistingSite — tests live at project root)
-vendor/bin/phpunit tests/ --filter=my_module
+# Run the configured test suite; adjust the path to the project's phpunit.xml
+ddev exec vendor/bin/phpunit --filter=my_module tests/
 ```
 
 ## Final Structure

@@ -1,7 +1,7 @@
 ---
 name: review-pr
 description: Review a GitHub Pull Request end to end. Use when the user shares a GitHub PR URL or PR number and wants the PR prepared locally for review, analyzed using project rules, optionally commented on in GitHub, and optionally synchronized to Jira based on the review outcome.
-allowed-tools: Bash(gh auth status:), Bash(gh auth switch:), Bash(gh pr view:), Bash(gh pr diff:), Bash(gh pr comment:), Bash(gh pr review:), Bash(git fetch:), Bash(git checkout:), Bash(git pull:), Bash(git stash:), Bash(ddev describe:), Bash(ddev start:), Bash(composer install:), Bash(drush cim:), Bash(drush updb:), Bash(drush cr:), Bash(drush uli:), Bash(phpcs *:), Bash(open *:), Bash(acli jira auth status:), Bash(acli jira workitem view:), Bash(acli jira workitem transition:), Bash(acli jira workitem assign:), Bash(acli jira workitem comment create:), Bash(cat .claude/data/mappings.json:*), Read, Glob, Grep
+allowed-tools: Bash(gh auth status:), Bash(gh auth switch:), Bash(gh pr view:), Bash(gh pr diff:), Bash(gh pr comment:), Bash(gh pr review:), Bash(git fetch:), Bash(git checkout:), Bash(git pull:), Bash(git stash:), Bash(ddev describe:), Bash(ddev start:), Bash(ddev composer install:), Bash(ddev drush cim:), Bash(ddev drush updb:), Bash(ddev drush cr:), Bash(ddev drush uli:), Bash(ddev phpcs *:), Bash(open *:), Bash(acli jira auth status:), Bash(acli jira workitem view:), Bash(acli jira workitem transition:), Bash(acli jira workitem assign:), Bash(acli jira workitem comment create:), Bash(cat .claude/data/mappings.json:*), Read, Glob, Grep
 ---
 
 # Review PR
@@ -107,10 +107,10 @@ If blocked → ask to stash.
 
 Run:
 ```bash
-composer install
-drush cim -y
-drush updb -y
-drush cr
+ddev composer install
+ddev drush cim -y
+ddev drush updb -y
+ddev drush cr
 ```
 
 Stop on failure.
@@ -121,7 +121,7 @@ Stop on failure.
 
 Run:
 ```bash
-ULI=$(drush uli) && echo "$ULI" && open "$ULI"
+ULI=$(ddev drush uli) && echo "$ULI" && open "$ULI"
 ```
 
 ---
@@ -135,7 +135,7 @@ From the changed files list gathered in step 2, filter to PHP files that fall wi
 
 For each matching file, run:
 ```bash
-phpcs <file-path>
+ddev phpcs <file-path>
 ```
 
 Collect all output. If no PHP files are in scope, skip this step silently.
@@ -147,7 +147,7 @@ Store the raw PHPCS output — it will be used directly in the Analysis Phase.
 ### 9. Run PHPStan
 
 ```bash
-phpstan
+ddev phpstan
 ```
 
 Collect output. Store raw results — use them as-is in the Analysis Phase.

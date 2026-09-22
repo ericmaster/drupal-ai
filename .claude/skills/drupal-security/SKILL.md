@@ -108,19 +108,30 @@ if (!$this->csrfToken->validate($token, 'my_module_action')) {
 ### File Upload Security
 
 ```php
-$validators = [
-  'file_validate_extensions' => ['pdf doc docx'],  // Whitelist extensions
-  'file_validate_size' => [25600000],  // 25MB limit
-  'FileSecurity' => [],  // Drupal 10.2+ - blocks dangerous files
-];
+use Drupal\file\Validation\FileValidatorInterface;
+use Drupal\file\FileInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-// NEVER trust file extension alone - check MIME type
-$file_mime = $file->getMimeType();
-$allowed_mimes = ['application/pdf', 'application/msword'];
-if (!in_array($file_mime, $allowed_mimes)) {
-  // Reject file
+final class UploadValidator {
+
+  // Inject file.validator into the class constructor.
+  public function __construct(private readonly FileValidatorInterface $fileValidator) {}
+
+  public function validateUpload(FileInterface $file): ConstraintViolationListInterface {
+    $validators = [
+      'FileExtension' => ['extensions' => 'pdf doc docx'],
+      'FileSizeLimit' => ['fileLimit' => 25 * 1024 * 1024],
+    ];
+
+    return $this->fileValidator->validate($file, $validators);
+  }
 }
 ```
+
+`FileValidator` also applies the `FileExtensionSecure` constraint after the supplied constraints
+pass. For images, add `FileIsImage` and dimension constraints as appropriate. Do not teach the
+removed `file_validate_*()` functions or invent a `FileSecurity` validator; use Drupal validation
+constraints and reject files when the returned violation list is not empty.
 
 ### Sensitive Data
 
@@ -157,4 +168,3 @@ When you see these patterns, **immediately warn**:
 | File upload without validation | Malicious file upload | Validate extension, size, and MIME type |
 | Direct `\Drupal::` usage in classes | Hard to test / bad practice | Use dependency injection |
 | Logging sensitive data | Information disclosure | Mask or avoid logging sensitive fields |
-

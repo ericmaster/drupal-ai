@@ -95,9 +95,9 @@ ddev drush cex
 
 | User Intent | Command |
 |---|---|
-| Preview config changes | `drush cim --no --diff` |
-| Import config | `drush cim` |
-| Export config | `drush cex` |
+| Preview config changes | `ddev drush cim --no --diff` |
+| Import config | `ddev drush cim` |
+| Export config | `ddev drush cex` |
 
 ## Related Commands
 

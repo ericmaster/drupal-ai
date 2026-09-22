@@ -137,6 +137,7 @@ $file = system_retrieve_file($url, $destination, FALSE, FILE_EXISTS_REPLACE);
 **NEW**:
 ```php
 // Use file_system service and http_client
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use GuzzleHttp\ClientInterface;
 
@@ -164,7 +165,7 @@ class MyClass {
       $directory = dirname($destination);
       $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
 
-      return $this->fileSystem->saveData($data, $destination, FileSystemInterface::EXISTS_REPLACE);
+      return $this->fileSystem->saveData($data, $destination, FileExists::Replace);
     }
     catch (\Exception $e) {
       \Drupal::logger('my_module')->error('Failed to retrieve file: @error', ['@error' => $e->getMessage()]);
@@ -292,9 +293,9 @@ git diff my_module.info.yml > ../../../patches/my_module-d11-info.patch
 
 After making changes, always:
 
-1. **Clear cache**: `drush cr`
-2. **Run upgrade_status**: `drush upgrade_status:analyze module_name`
-3. **Check logs**: `drush watchdog:show --severity=Error`
+1. **Clear cache**: `ddev drush cr`
+2. **Run upgrade_status**: `ddev drush upgrade_status:analyze module_name`
+3. **Check logs**: `ddev drush watchdog:show --severity=Error`
 4. **Visit pages**: Test actual functionality
 5. **Run tests**: If module has tests, run them
 

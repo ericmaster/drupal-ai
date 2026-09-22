@@ -4,13 +4,35 @@
 # Responsibilities:
 # - persist repo-local PATH entries for later Claude Bash commands
 # - surface compact repo context
-# - ensure Docker Desktop and DDEV are ready on initial startup
+# - report Docker Desktop and DDEV availability on initial startup
 
 set -u
 
 ROOT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 DDEV_CONFIG="${ROOT_DIR}/.ddev/config.yaml"
-EXPECTED_THEME_DIR="$(find "${ROOT_DIR}/docroot/themes/custom" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
+WEB_ROOT="${DRUPAL_WEB_ROOT:-}"
+if [ -z "${WEB_ROOT}" ]; then
+  for candidate in docroot web html; do
+    if [ -d "${ROOT_DIR}/${candidate}/themes/custom" ]; then
+      WEB_ROOT="${ROOT_DIR}/${candidate}"
+      break
+    fi
+  done
+elif [ "${WEB_ROOT#/}" = "${WEB_ROOT}" ]; then
+  WEB_ROOT="${ROOT_DIR}/${WEB_ROOT}"
+fi
+
+THEME_ROOT="${DRUPAL_THEME_ROOT:-}"
+if [ -z "${THEME_ROOT}" ]; then
+  THEME_ROOT="${WEB_ROOT:-${ROOT_DIR}/docroot}/themes/custom"
+fi
+if [ -n "${THEME_ROOT}" ] && [ "${THEME_ROOT#/}" = "${THEME_ROOT}" ]; then
+  THEME_ROOT="${ROOT_DIR}/${THEME_ROOT}"
+fi
+EXPECTED_THEME_DIR=""
+if [ -d "${THEME_ROOT}" ]; then
+  EXPECTED_THEME_DIR="$(find "${THEME_ROOT}" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
+fi
 DOCKER_READY=1
 
 print_line() {
@@ -35,10 +57,12 @@ print_repo_context() {
 
   if git -C "${ROOT_DIR}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     BRANCH="$(git -C "${ROOT_DIR}" rev-parse --abbrev-ref HEAD 2>/dev/null || printf 'unknown')"
+    DEFAULT_BRANCH="$(git -C "${ROOT_DIR}" symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##')"
+    DEFAULT_BRANCH="${DEFAULT_BRANCH:-main}"
     STATUS_LINES="$(git -C "${ROOT_DIR}" status --short 2>/dev/null | sed -n '1,5p')"
     STATUS_COUNT="$(git -C "${ROOT_DIR}" status --short 2>/dev/null | wc -l | tr -d ' ')"
 
-    if [ "${BRANCH}" != "develop" ]; then
+    if [ "${BRANCH}" != "${DEFAULT_BRANCH}" ]; then
       print_line "Branch: ${BRANCH}"
     fi
 
@@ -51,7 +75,7 @@ print_repo_context() {
   fi
 
   if [ -z "${EXPECTED_THEME_DIR}" ]; then
-    print_line "Notice: no theme found under docroot/themes/custom/"
+    print_line "Notice: no theme found under ${THEME_ROOT}"
   fi
 }
 
@@ -62,24 +86,7 @@ if [ -f "${DDEV_CONFIG}" ]; then
   if command -v docker >/dev/null 2>&1; then
     if ! docker info >/dev/null 2>&1; then
       DOCKER_READY=0
-      # On a fresh startup, it is worth trying to recover by launching Docker.
-      if open -a Docker >/dev/null 2>&1; then
-        print_line "Docker Desktop: starting"
-        for _ in 1 2 3 4 5 6 7 8 9 10; do
-          sleep 2
-          if docker info >/dev/null 2>&1; then
-            DOCKER_READY=1
-            print_line "Docker Desktop: ready"
-            break
-          fi
-        done
-      else
-        print_line "Docker Desktop: failed to launch"
-      fi
-
-      if [ "${DOCKER_READY}" -ne 1 ]; then
-        print_line "Docker Desktop: still not ready"
-      fi
+      print_line "Docker: not ready (start it before running DDEV commands)"
     fi
   else
     print_line "Docker: command not found"
@@ -87,14 +94,9 @@ if [ -f "${DDEV_CONFIG}" ]; then
   fi
 
   if [ "${DOCKER_READY}" -eq 1 ] && command -v ddev >/dev/null 2>&1; then
-    # ddev status still works for stopped projects, so check for a healthy web service.
     DDEV_STATUS="$(cd "${ROOT_DIR}" && ddev status 2>/dev/null)"
     if ! printf '%s' "${DDEV_STATUS}" | grep -q 'web[[:space:]]*OK'; then
-      if (cd "${ROOT_DIR}" && ddev start >/dev/null 2>&1); then
-        print_line "DDEV: started"
-      else
-        print_line "DDEV: failed to start"
-      fi
+      print_line "DDEV: web service is not running"
     fi
   elif [ "${DOCKER_READY}" -eq 1 ]; then
     print_line "DDEV: command not found"

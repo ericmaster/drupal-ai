@@ -163,11 +163,11 @@ final class CentsToDecimal extends ProcessPluginBase {
 ## Key Drush Commands
 
 ```bash
-drush migrate:status                          # list all migrations + status
-drush migrate:import migration_id             # run
-drush migrate:import migration_id --update    # re-run and update existing records
-drush migrate:import migration_id --limit=50  # batch to avoid memory issues
-drush migrate:rollback migration_id           # undo
-drush migrate:reset-status migration_id       # fix "migration is busy" state
-drush migrate:messages migration_id           # show per-row errors
+ddev drush migrate:status                          # list all migrations + status
+ddev drush migrate:import migration_id             # run
+ddev drush migrate:import migration_id --update    # re-run and update existing records
+ddev drush migrate:import migration_id --limit=50  # batch to avoid memory issues
+ddev drush migrate:rollback migration_id           # undo
+ddev drush migrate:reset-status migration_id       # fix "migration is busy" state
+ddev drush migrate:messages migration_id           # show per-row errors
 ```

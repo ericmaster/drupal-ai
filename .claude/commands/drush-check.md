@@ -11,33 +11,33 @@ Run a series of Drush commands to check site health and status.
 
 This command takes no arguments. It runs a standard set of health checks on the current Drupal site.
 
-> **DDEV users:** prefix each `drush` command with `ddev` (e.g. `ddev drush status`).
+The examples use DDEV. If the project uses another container wrapper, substitute its command prefix.
 
 ## Steps
 
 1. Check Drush is available:
    ```bash
-   drush status
+   ddev drush status
    ```
 
 2. Check for available updates:
    ```bash
-   drush pm:security
+   ddev drush pm:security
    ```
 
 3. Check configuration status:
    ```bash
-   drush config:status
+   ddev drush config:status
    ```
 
 4. Check for pending database updates:
    ```bash
-   drush updatedb:status
+   ddev drush updatedb:status
    ```
 
 5. Check watchdog for recent errors:
    ```bash
-   drush watchdog:show --severity=error --count=10
+   ddev drush watchdog:show --severity=error --count=10
    ```
 
 ## Report Findings

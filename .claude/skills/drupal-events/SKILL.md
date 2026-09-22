@@ -67,7 +67,7 @@ services:
 ## Generate with Drush
 
 ```bash
-drush generate event-subscriber --answers='{
+ddev drush generate event-subscriber --answers='{
   "module": "my_module",
   "class": "MyEventSubscriber",
   "event": "kernel.request"

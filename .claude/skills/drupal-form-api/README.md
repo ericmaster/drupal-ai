@@ -9,7 +9,7 @@ Use when working with:
 - Writing `buildForm()`, `validateForm()`, and `submitForm()` methods
 - Injecting services into forms via `create()`
 - Reading submitted values with `$form_state->getValue()`
-- Generating form scaffolding with `drush generate form-simple`
+- Generating form scaffolding with `ddev drush generate form-simple`
 
 ## Mental Model
 
@@ -30,7 +30,7 @@ Use when working with:
 
 ```bash
 # Simple form
-drush generate form-simple --answers='{
+ddev drush generate form-simple --answers='{
   "module": "my_module",
   "class": "MyForm",
   "form_id": "my_module_my_form",
@@ -42,7 +42,7 @@ drush generate form-simple --answers='{
 }'
 
 # Config form
-drush generate form-config --answers='{
+ddev drush generate form-config --answers='{
   "module": "my_module",
   "class": "SettingsForm",
   "form_id": "my_module_settings",

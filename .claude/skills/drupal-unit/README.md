@@ -30,7 +30,7 @@ Use when working with:
 ## Generating a Test Scaffold with Drush
 
 ```bash
-drush generate test:unit --answers='{
+ddev drush generate test:unit --answers='{
   "module": "my_module",
   "class": "MyServiceTest"
 }'
